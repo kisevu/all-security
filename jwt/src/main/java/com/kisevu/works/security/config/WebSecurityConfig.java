@@ -26,11 +26,16 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(authorizeRequests ->authorizeRequests.anyRequest().authenticated());
+        http.authorizeHttpRequests((authorizeRequests) ->authorizeRequests
+                .requestMatchers("/h2-console/**").permitAll()
+                .anyRequest().authenticated());
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 //        http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
+        http.headers(headers->headers.frameOptions(frameOptions->frameOptions.sameOrigin()
+        ));
+        http.csrf(csrf-> csrf.disable());
        return  http.build();
     }
 

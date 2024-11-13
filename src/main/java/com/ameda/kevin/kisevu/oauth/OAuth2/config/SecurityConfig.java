@@ -6,6 +6,7 @@ package com.ameda.kevin.kisevu.oauth.OAuth2.config;
 *
 */
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,8 +24,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf(csrf ->csrf.disable())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-                .formLogin(form ->form.defaultSuccessUrl("/success",true));
+//                .formLogin(form ->form.defaultSuccessUrl("/success",true));
+                .oauth2Login(oauth2-> oauth2.defaultSuccessUrl("/success",true));
         return httpSecurity.build();
+
+    }
+
+    @Bean
+    public Dotenv dotenv() {
+        return Dotenv.configure().load();  // Loads the .env file into the environment
     }
 
 }

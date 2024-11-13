@@ -25,7 +25,7 @@ public class SecurityConfig {
         httpSecurity.csrf(csrf ->csrf.disable())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
 //                .formLogin(form ->form.defaultSuccessUrl("/success",true));
-                .oauth2Login(oauth2-> oauth2.defaultSuccessUrl("/success",true));
+                .oauth2Login(oauth2-> oauth2.defaultSuccessUrl("http://localhost:3000/dashboard",true));
         return httpSecurity.build();
 
     }

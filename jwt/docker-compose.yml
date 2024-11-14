@@ -1,0 +1,40 @@
+services:
+  postgres:
+    container_name: postgress-security
+    image: postgres
+    environment:
+      POSTGRES_USER: ameda
+      POSTGRES_PASSWORD: pass
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: security
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - security-network
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: postgres-GUI
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - security-network
+    restart: unless-stopped
+networks:
+  security-network:
+    driver: bridge
+
+
+volumes:
+  postgres:
+  pgadmin:
+    driver: local

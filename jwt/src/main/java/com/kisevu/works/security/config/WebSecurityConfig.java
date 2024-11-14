@@ -51,6 +51,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeRequests) ->authorizeRequests
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/sign-in").permitAll()
+                .requestMatchers("/api/public/**").permitAll()
                 .anyRequest().authenticated());
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -86,24 +87,24 @@ public class WebSecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
     }
 
-    @Bean
-    public CommandLineRunner dataInit(UserDetailsService userDetailsService){
-        return args -> {
-            UserDetails user1 = User.withUsername("user1")
-                    .password(passwordEncoder().encode("password1"))
-                    .roles("USER")
-                    .build();
-
-            UserDetails user2 = User.withUsername("user2")
-                    .password(passwordEncoder().encode("password2"))
-                    .roles("ADMIN")
-                    .build();
-            JdbcUserDetailsManager userDetailsManager = new
-                    JdbcUserDetailsManager(dataSource);
-            userDetailsManager.createUser(user1);
-            userDetailsManager.createUser(user2);
-        };
-    }
+//    @Bean
+//    public CommandLineRunner dataInit(UserDetailsService userDetailsService){
+//        return args -> {
+//            UserDetails user1 = User.withUsername("user1")
+//                    .password(passwordEncoder().encode("password1"))
+//                    .roles("USER")
+//                    .build();
+//
+//            UserDetails user2 = User.withUsername("user2")
+//                    .password(passwordEncoder().encode("password2"))
+//                    .roles("ADMIN")
+//                    .build();
+//            JdbcUserDetailsManager userDetailsManager = new
+//                    JdbcUserDetailsManager(dataSource);
+//            userDetailsManager.createUser(user1);
+//            userDetailsManager.createUser(user2);
+//        };
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){

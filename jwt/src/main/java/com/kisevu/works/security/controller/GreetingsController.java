@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -42,7 +43,7 @@ public class GreetingsController {
         return "Hello Admin";
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ASSISTANT')")
     @GetMapping("/user")
     public String user(){
         return "Hello User";
@@ -76,5 +77,19 @@ public class GreetingsController {
                 .jwtToken(jwtToken)
                 .build();
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Map<String,Object> profile = new HashMap<>();
+        profile.put("username",userDetails.getUsername());
+        profile.put("roles",userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList())
+        );
+        profile.put("message","User specific info from server side");
+        return ResponseEntity.ok(profile);
     }
 }

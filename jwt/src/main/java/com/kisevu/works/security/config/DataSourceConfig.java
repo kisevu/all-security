@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 @project jwt
 *
 */
-@Configuration
+//@Configuration
 public class DataSourceConfig {
 
     /*
@@ -38,10 +38,10 @@ public class DataSourceConfig {
     @Bean
     public DataSourceInitializer dataSourceInitializer(){
         DataSourceInitializer initializer = new DataSourceInitializer();
-        initializer.setDataSource(dataSource);
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("schema.sql"));
-        initializer.setDatabasePopulator(populator);
+//        initializer.setDataSource(dataSource);
+//        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+//        populator.addScript(new ClassPathResource("schema.sql"));
+//        initializer.setDatabasePopulator(populator);
         return initializer;
     }
 }
